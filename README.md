@@ -12,7 +12,7 @@ On peut donc passer un props en profondeur tout en évitant de les passers dans 
 
 ## Création de notre Context : `React.createContext(defaultvalue)`
 
-C'est la méthode pour créer notre Context. Il est bon à savoir que nous devons lui donner n'importe quelle valeur par défaut.
+C'est la méthode pour créer notre contexte. Il est bon à savoir que nous devons lui donner n'importe quelle valeur par défaut.
 
 Exemple:
 
@@ -31,7 +31,7 @@ const MySecondContext = React.createContext(null)
 
 ## Fournir notre Context : `<MyContext.Provider value={/* une valeur */}`
 
-Grâce au Provider (le fournisseur), nous pouvons assigner une valeur , ce qui permet aux composants enfants de consumer le Context et également s'abonner aux modifications de celui-ci, sans faire appel aux props.
+Grâce au Provider (le fournisseur), nous pouvons assigner une valeur , ce qui permet aux composants enfants de consumer le contexte et également s'abonner aux modifications de celui-ci, sans faire appel aux props.
 
 Exemple:
 
@@ -66,8 +66,8 @@ Il est bon à savoir qu'avec un Provider, la valeur par défaut est seulement ac
 
 ## Assigner la valeur de notre Context à un composant : `Class.contextType`
 
-Cette propriété nous permet d'assigner notre Context (crée par `React.createContext(defaultvalue)`).
-Cela nous laisse donc la possibilité d'assigner la valeur actuelle de notre context en utilisant `this.context`
+Cette propriété nous permet d'assigner notre contexte (crée par `React.createContext(defaultvalue)`).
+Cela nous laisse donc la possibilité d'assigner la valeur actuelle de notre `Context.Provider` en utilisant `this.context`
 
 Exemple:
 
@@ -84,12 +84,12 @@ class Mur extends Component {
 }
 Mur.contextType = MatiereContext
 ```
->! *Bon à savoir :* Nous ne pouvons qu'assigner qu'une seule valeur pour chaque Context, mais il est possible de consomer plusieurs Contexts, nous verrons cela plus tard
+>! *Bon à savoir :* Nous ne pouvons qu'assigner qu'une seule valeur pour chaque Context, mais il est possible de consomer plusieurs contextes, nous verrons cela plus tard
 
-## Alternatif plus simple (et léger) le`Context.Consumer`
+## Alternative plus simple (et léger) le`Context.Consumer`
 
-Ce composant permet de s'abonner aux changements du context. Cela permet de s'abonner à un contexte dans un composant de fonction.
-le Consumer est un moyen plus simple de lire nos données fournis par notre Provider ou notre Context.
+Ce composant permet de s'abonner aux changements du contexte. Cela permet de s'abonner à un contexte dans un composant de fonction.
+le Consumer est un moyen plus simple de lire nos données fournis par notre Provider ou notre contexte.
 
 Par exemple, je souhaite consomer la valeur de mon Provider
 ```jsx
@@ -122,11 +122,11 @@ const Child = () => {
 }
 export default Child;
 ```
-Comme vous pouvez le voir, nous pouvons directement consomer notre Context sans faire appel à une classe et sans instancier le `contextType`
+Comme vous pouvez le voir, nous pouvons directement consomer notre contexte sans faire appel à une classe et sans instancier le `contextType`
 
 ### Petit tips
 
-Nous pouvons accéder à nos valeurs par défault de notre context *si le Consumer ne match aucun Provider*
+Nous pouvons accéder à nos valeurs par défault de notre contexte *si le Consumer ne match aucun Provider*
 
 ```jsx
 // Je crée mon Context
@@ -162,7 +162,7 @@ export default Header
 
 ## Niveau hard: Consommer de nombreux Contexts
 
-Il est tout à fait possible de Consommer plusieurs Contexts. Pour que le rendu du Context soit rapide, React a besoin de séparer chaque Consumer en un noeud distinct dans l'arborescence.
+Il est tout à fait possible de Consommer plusieurs contextes. Pour que le rendu du contexte soit rapide, React a besoin de séparer chaque Consumer en un noeud distinct dans l'arborescence.
 
 Exemple :
 
