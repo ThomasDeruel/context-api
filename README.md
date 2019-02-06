@@ -12,7 +12,7 @@ On peut donc passer un props en profondeur tout en évitant de les passers dans 
 
 ## Création de notre Context : `React.createContext(defaultvalue)`
 
-C'est la méthode pour créer notre Context. Il est bon à savoir que nous devons lui appliquer n'importe quelle valeur par défaut.
+C'est la méthode pour créer notre Context. Il est bon à savoir que nous devons lui donner n'importe quelle valeur par défaut.
 
 Exemple:
 
