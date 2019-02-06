@@ -48,8 +48,7 @@ class Maison extends Component {
             <div className="maison">
                 <MatiereContext.Provider value={this.state.matiere}>
                 {/* 
-                // Mes composants sont maintenant "abonnés' à mon Context MatiereContext
-                // 
+                // Mes composants sont maintenant "abonnés' MatiereContext
                 <Mur/>
                 <Cheminee/>
                 etc.
