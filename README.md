@@ -1,68 +1,229 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Context Api
 
-## Available Scripts
+## Introduction
 
-In the project directory, you can run:
+Le "Context" est un moyen de transmettre des données à travers une arborescence de composants sans avoir à transmettre manuellement les props à tous les niveaux. 
 
-### `npm start`
+## Pourquoi l'utiliser
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Cette fonctionnalité permet de partager des données de manière "global" sur note arbre de composants de notre application React. Cela permet entre autre d'éviter la redondance dans notre code.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+On peut donc passer un props en profondeur tout en évitant de les passers dans des éléments intermédiaires.
 
-### `npm test`
+## Création de notre Context : `React.createContext(defaultvalue)`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+C'est la méthode pour créer notre Context. Il est bon à savoir que nous devons lui appliquer n'importe quelle valeur par défaut.
 
-### `npm run build`
+Exemple:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```jsx
+const MyFirstContext = React.createContext("a default value");
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+const MySecondContext = React.createContext({
+    name: 'Paul',
+    age: 26,
+    toggle: () => {},
+    //etc.
+})
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const MySecondContext = React.createContext(null)
+```
 
-### `npm run eject`
+## Fournir notre Context : `<MyContext.Provider value={/* une valeur */}`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Grâce au Provider (le fournisseur), nous pouvons assigner une valeur , ce qui permet aux composants enfants de consumer le Context et également s'abonner aux modifications de celui-ci, sans faire appel aux props.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Exemple:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```jsx
+import React, { Component } from "react";
+const MatiereContext = React.createContext("un nom par défault");
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+class Maison extends Component {
+    state = {
+        matiere: "brique"
+    }
+    render() {
+        return (
+            <div className="maison">
+                <MatiereContext.Provider value={this.state.matiere}>
+                {/* 
+                // Mes composants sont maintenant "abonnés' à mon Context MatiereContext
+                // 
+                <Mur/>
+                <Cheminee/>
+                etc.
+                */}
+                <MatiereContext.Provider/>
+            </div>
+        )
+    }
+}
+```
+Il est bon à savoir qu'avec un Provider, la valeur par défaut est seulement accessible quand un composant ne match aucun Provider au-dessus de lui. *Cela peut-être utile pour tester un composant isoler sans l'envelopper d'un Provider*.
 
-## Learn More
+>! *Mise en garde :* Comme le Context utilise une référence d'identité lors du re-rendu, il existe certains pièges qui pourraient déclencher des rendus non intentionnels chez les consommateurs lors du rendu du Provider. Pour éviter se problème, placez la valeur dans le state parent
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Assigner la valeur de notre Context à un composant : `Class.contextType`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Cette propriété nous permet d'assigner notre Context (crée par `React.createContext(defaultvalue)`).
+Cela nous laisse donc la possibilité d'assigner la valeur actuelle de notre context en utilisant `this.context`
 
-### Code Splitting
+Exemple:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```jsx
+class Mur extends Component {
+    render() {
+        let matiere = this.context;
+        return (
+            <div className="mur">
+            <p>Mur fait en {matiere}</p>
+            </div>
+        )
+    }
+}
+Mur.contextType = MatiereContext
+```
+>! *Bon à savoir :* Nous ne pouvons qu'assigner qu'une seule valeur pour chaque Context, mais il est possible de consomer plusieurs Contexts, nous verrons cela plus tard
 
-### Analyzing the Bundle Size
+## Alternatif plus simple (et léger) le`Context.Consumer`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Ce composant permet de s'abonner aux changements du context. Cela permet de s'abonner à un contexte dans un composant de fonction.
+le Consumer est un moyen plus simple de lire nos données fournis par notre Provider ou notre Context.
 
-### Making a Progressive Web App
+Par exemple, je souhaite consomer la valeur de mon Provider
+```jsx
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+class Parent extends Component {
+    render() {
+        return (
+            <MyContext.Provider value={"my title"}>
+                <Child/>
+            </MyContext.Provider>
+        )
+    }
+}
+```
+Le rendu côté `Child`:
 
-### Advanced Configuration
+```jsx
+import {MyContext} from '../MyContext';
+const Child = () => {
+    return (
+        <MyContext.Consumer>
+        
+        {value=>(
+            // value = "my title"
+            // this is my title
+            <h1> This is my {value}<h1>
+        )}
+        </MyContext.Consumer>
+    )
+}
+export default Child;
+```
+Comme vous pouvez le voir, nous pouvons directement consomer notre Context sans faire appel à une classe et sans instancier le `contextType`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+### Petit tips
 
-### Deployment
+Nous pouvons accéder à nos valeurs par défault de notre context *si le Consumer ne match aucun Provider*
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+```jsx
+// Je crée mon Context
+const userContext = React.createContext(
+    {
+        name: "Paul",
+        age: 26,
+        email: 'paul-jz@exemple.com',
+    }
+);
 
-### `npm run build` fails to minify
+// Je le consomme
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+const Header = () => {
+    return (
+        <div className="header">
+            <h1>User account</h1>
+            <userContext.Consumer>
+            {({name,age,email}) => (
+                <ul>
+                    <li>username: {name}</li>
+                    <li>age: {age}</li>
+                    <li>email: {email}</li>
+                </ul>
+            )}
+            </userContext.Consumer>
+        </div>
+    )
+}
+
+export default Header
+```
+
+## Niveau hard: Consommer de nombreux Contexts
+
+Il est tout à fait possible de Consommer plusieurs Contexts. Pour que le rendu du Context soit rapide, React a besoin de séparer chaque Consumer en un noeud distinct dans l'arborescence.
+
+Exemple :
+
+```jsx
+const UserContext = React.createContext(undefined);
+
+class App extends React.Component {
+    render() {
+        state = {
+            name: 'paul',
+            age: 26,
+            email: 'paul-jz@exemple.com'
+        }
+
+        return (
+            <UserContext.Provide value={this.state.name}>
+                <UserContext.Provide value={this.state.age}>
+                    <UserContext.Provide value={this.state.email}>
+                    <Main/>
+                    </UserContext.Provide>  
+                </UserContext.Provide>  
+            </UserContext.Provide>
+        )
+    }
+}
+
+const Main = () => {
+    return (
+        <header>header</header>
+        <MainSection/>
+        <footer>footer</footer>
+    )
+}
+
+const MainSection = () => {
+    return (
+        <UserContext.Consumer>
+        {name => (
+          <UserContext.Consumer>
+          {age => (
+            <UserContext.Consumer>
+            {email => (
+                <Profil name={name} age={age} email={email}/>
+            )}
+            </UserContext.Consumer>
+          )}
+          </UserContext.Consumer>
+        )}
+        </UserContext.Consumer>
+    )
+};
+
+const Profil = ({name, age, email}) => {
+    return (
+        <ul>
+            <li>username: {name}</li>
+            <li>age: {age}</li>
+            <li>email: {email}</li>
+        </ul>
+    )
+}
+
+export default App;
+```
