@@ -89,7 +89,7 @@ Mur.contextType = MatiereContext
 ## Alternative plus simple (et léger) le`Context.Consumer`
 
 Ce composant permet de s'abonner aux changements du contexte. Cela permet de s'abonner à un contexte dans un composant de fonction.
-le `Consumer` est un moyen plus simple de lire nos données fournis par notre Provider ou notre contexte.
+Le `Consumer` est un moyen plus simple de lire nos données fournis par notre Provider ou notre contexte.
 
 Par exemple, je souhaite consommer la valeur de mon Provider
 
