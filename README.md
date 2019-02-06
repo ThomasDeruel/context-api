@@ -31,7 +31,7 @@ const MySecondContext = React.createContext(null)
 
 ## Fournir notre Context : `<MyContext.Provider value={/* une valeur */}`
 
-Grâce au Provider (le fournisseur), nous pouvons assigner une valeur , ce qui permet aux composants enfants de consumer le contexte et également s'abonner aux modifications de celui-ci, sans faire appel aux props.
+Grâce au Provider (le fournisseur), nous pouvons assigner une valeur , ce qui permet aux composants enfants de consommer le contexte et également s'abonner aux modifications de celui-ci, sans faire appel aux props.
 
 Exemple:
 
@@ -84,16 +84,16 @@ class Mur extends Component {
 }
 Mur.contextType = MatiereContext
 ```
->! *Bon à savoir :* Nous ne pouvons qu'assigner qu'une seule valeur pour chaque Context, mais il est possible de consomer plusieurs contextes, nous verrons cela plus tard
+>! *Bon à savoir :* Nous ne pouvons qu'assigner qu'une seule valeur pour chaque Context, mais il est possible de consommer plusieurs contextes, nous verrons cela plus tard
 
 ## Alternative plus simple (et léger) le`Context.Consumer`
 
 Ce composant permet de s'abonner aux changements du contexte. Cela permet de s'abonner à un contexte dans un composant de fonction.
-le Consumer est un moyen plus simple de lire nos données fournis par notre Provider ou notre contexte.
+le `Consumer` est un moyen plus simple de lire nos données fournis par notre Provider ou notre contexte.
 
-Par exemple, je souhaite consomer la valeur de mon Provider
+Par exemple, je souhaite consommer la valeur de mon Provider
+
 ```jsx
-
 class Parent extends Component {
     render() {
         return (
@@ -122,7 +122,7 @@ const Child = () => {
 }
 export default Child;
 ```
-Comme vous pouvez le voir, nous pouvons directement consomer notre contexte sans faire appel à une classe et sans instancier le `contextType`
+Comme vous pouvez le voir, nous pouvons directement consommer notre contexte sans faire appel à une classe et sans instancier le `contextType`
 
 ### Petit tips
 
