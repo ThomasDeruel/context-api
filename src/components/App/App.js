@@ -16,7 +16,7 @@ class App extends Component {
         return (
           <div className="App">
            {/*Première étape: je fournis mes valeurs dans des noeuds
-             premier niveau: je fournis age*/}
+             premier niveau: je fournis name*/}
             <UserContext.Provider value={this.state.name}>
               {/* deuxième niveau: je fournis age*/}
               <UserContext.Provider value={this.state.age}>
