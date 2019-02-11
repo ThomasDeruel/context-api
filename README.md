@@ -59,11 +59,13 @@ class Maison extends Component {
     }
 }
 ```
-Il est bon à savoir qu'avec un Provider, la valeur par défaut est seulement accessible quand un composant ne match aucun Provider au-dessus de lui. *Cela peut-être utile pour tester un composant isoler sans l'envelopper d'un Provider*.
+### A savoir
+
+La valeur par défaut de notre contexte est seulement accessible quand un composant ne match aucun Provider au-dessus de lui. *Cela peut-être utile pour tester un composant isoler sans l'envelopper d'un Provider*.
 
 >! *Mise en garde :* Comme le Context utilise une référence d'identité lors du re-rendu, il existe certains pièges qui pourraient déclencher des rendus non intentionnels chez les consommateurs lors du rendu du Provider. Pour éviter se problème, placez la valeur dans le state parent
 
-## Assigner la valeur de notre Context à un composant : `Class.contextType`
+## Assigner la valeur de notre Context à un composant (une classe) : `Class.contextType`
 
 Cette propriété nous permet d'assigner notre contexte (crée par `React.createContext(defaultvalue)`).
 Cela nous laisse donc la possibilité d'assigner la valeur actuelle de notre `Context.Provider` en utilisant `this.context`
